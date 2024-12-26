@@ -14,15 +14,34 @@ def count_words(book_path : str) -> int:
 def count_characters(book_path : str) -> int:
     with open(book_path) as book:
         file_contents: str = book.read()
-    count: dict = {}
+    count_dict: dict[str: int] = {}
     for character in file_contents:
-        if character.lower() not in count and character.isalpha() and character.islower():
-            count.update({character:file_contents.lower().count(character)})
-    return sorted(count.items())
+        if character.lower() not in count_dict and character.isalpha() and character.islower():
+            count_dict.update({character:file_contents.lower().count(character)})
+    return sorted(count_dict.items())
+
+def report_char(book_path:str) -> int:
+    with open(book_path) as book:
+        book_contents: str = book.read()
+    count_dict: dict[str: int] = {}
+    for character in book_contents:
+        if character.lower() not in count_dict and character.isalpha() and character.islower():
+            count_dict.update({character:book_contents.lower().count(character)})
+    report = f"""--- Begin report of {book_path} --- '\n' 
+    {count_words(book_path)} words found in document '\n'"""
+    for char in sorted(count_dict.items()):
+        report += f"The {char[0]} character was found {char[1]} times'\n'"
+    report += "--- End report ---"
+    return report.replace("'", "")
+
+book_path: str = r"./books/frankenstein.txt"
 
 
 # words = count_words(r"./books/frankenstein.txt")
 # print(words)
 
-a = count_characters(r"./books/frankenstein.txt")
-print(a)
+# char = count_characters(r"./books/frankenstein.txt")
+# print(char)
+
+report = report_char(book_path=book_path)
+print(report)
