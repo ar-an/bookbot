@@ -15,9 +15,9 @@ def count_characters(book_path : str) -> int:
     with open(book_path) as book:
         file_contents: str = book.read()
     count: dict = {}
-    for character in file_contents.lower():
-        if character not in count:
-            count.update({character:file_contents.count(character)})
+    for character in file_contents:
+        if character.lower() not in count and character.isalpha() and character.islower():
+            count.update({character:file_contents.lower().count(character)})
     return sorted(count.items())
 
 
